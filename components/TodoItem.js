@@ -4,7 +4,7 @@ import { commonStyles } from '../styles/commonStyles';
 
 export function TodoItem({ item, onToggle, onDelete, onNavigate }) {
     return (
-        <View style={[styles.todoItemContainer, item.isComplete && styles.completedContainer, commonStyles.card]}>
+        <TouchableOpacity onPress={onNavigate} style={[styles.todoItemContainer, item.isComplete && styles.completedContainer, commonStyles.card]}>
             <TouchableOpacity onPress={onToggle} style={styles.checkContainer}>
                 <MaterialIcons
                     name={item.isComplete ? 'check-box' : 'check-box-outline-blank'}
@@ -13,7 +13,7 @@ export function TodoItem({ item, onToggle, onDelete, onNavigate }) {
                 />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={onNavigate} style={styles.textContainer}>
+            <View style={styles.textContainer}>
                 <Text style={[styles.todoText, item.isComplete && styles.completedText]}>
                     {item.text}
                 </Text>
@@ -22,12 +22,12 @@ export function TodoItem({ item, onToggle, onDelete, onNavigate }) {
                         {item.content}
                     </Text>
                 ) : null}
-            </TouchableOpacity>
+            </View>
 
             <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
                 <MaterialIcons name="delete" size={24} color="#cc0000" />
             </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
     );
 }
 

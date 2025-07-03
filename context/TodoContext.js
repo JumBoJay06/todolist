@@ -68,7 +68,7 @@ export function TodoProvider({ children }) {
       try {
         const storedTodos = await AsyncStorage.getItem(TODOS_STORAGE_KEY);
         if (storedTodos !== null) {
-          dispatch({ type: 'SET_TODOS', payload: JSON.parse(storedTodos) });
+          dispatch({ type: ACTION_TYPES.SET_TODOS, payload: JSON.parse(storedTodos) });
         }
       } catch (e) {
         console.error('讀取待辦事項失敗', e);
@@ -86,10 +86,7 @@ export function TodoProvider({ children }) {
         console.error('儲存待辦事項失敗', e);
       }
     }
-    // 只有在 todos 陣列非初始空陣列時才儲存
-    if (todos.length > 0) {
-      saveTodos();
-    }
+    saveTodos();
   }, [todos]); // 依賴於 todos 狀態
 
   return (
