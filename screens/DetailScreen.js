@@ -5,12 +5,16 @@ import { useTodos, useTodosDispatch, ACTION_TYPES } from '../context/TodoContext
 import { commonStyles } from '../styles/commonStyles';
 
 export function DetailScreen({ route, navigation }) {
+    // 從路由參數中取得 todoId
     const { todoId } = route.params;
+    // 使用自訂 Hook 取得 todos 狀態和 dispatch 函式
     const todos = useTodos();
     const dispatch = useTodosDispatch();
 
+    // 根據 todoId 找到對應的 todo
     const todo = todos.find(t => t.id === todoId);
 
+    // 如果找不到 todo，則設定預設值為空字串
     const [text, setText] = useState(todo ? todo.text : '');
     const [content, setContent] = useState(todo ? todo.content : '');
 

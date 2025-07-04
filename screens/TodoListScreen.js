@@ -12,6 +12,7 @@ export function TodoListScreen({ navigation }) {
   const todos = useTodos();
   const dispatch = useTodosDispatch();
   
+  // 狀態：用於儲存新增待辦事項的文字和輸入框狀態
   const [newTodo, setNewTodo] = useState('');
   const [isInputTodo, setIsInputTodo] = useState(false);
 
@@ -24,11 +25,13 @@ export function TodoListScreen({ navigation }) {
     handleInputChange('');
   };
 
+  // 更新輸入框的狀態
   const handleInputChange = (text) => {
     setNewTodo(text);
     setIsInputTodo(text.trim().length > 0);
   };
 
+  // 渲染每個待辦事項的項目
   const renderItem = ({ item }) => (
     <TodoItem
       item={item}
@@ -36,12 +39,15 @@ export function TodoListScreen({ navigation }) {
       onToggle={() => dispatch({ type: ACTION_TYPES.TOGGLE_TODO, payload: { id: item.id } })}
       // 派發 'DELETE_TODO' action
       onDelete={() => dispatch({ type: ACTION_TYPES.DELETE_TODO, payload: { id: item.id } })}
+      // 導航到詳細頁面
       onNavigate={() => navigation.navigate(SCREEN_NAMES.DETAIL, { todoId: item.id })}
     />
   );
 
   return (
+    // 使用 View 包裹整個頁面，並套用通用樣式
     <View style={commonStyles.pageContainer}>
+      // 使用 View 包裹輸入框和新增按鈕
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.textInput}
@@ -53,10 +59,11 @@ export function TodoListScreen({ navigation }) {
             <MaterialIcons name="add-circle" size={36} color={isInputTodo === true ? '#007cdb' : 'gray'} />
         </TouchableOpacity>
       </View>
+      // 使用 FlatList 渲染待辦事項列表
       <FlatList
         data={todos}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id} //可以直接使用 nanoid
+        keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingBottom: 20 }}
       />
     </View>

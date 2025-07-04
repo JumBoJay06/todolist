@@ -1,4 +1,6 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
+// iOS 會以 key-value 方式儲存在App沙盒檔案裡
+// Android 則使用 RocksDB(類似 SQLite,FB 出的) 儲存資料
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // nanoid/non-secure 在 React Native 環境中更輕量且適用
 import { nanoid } from 'nanoid/non-secure';
