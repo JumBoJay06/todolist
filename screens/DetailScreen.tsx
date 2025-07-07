@@ -4,9 +4,9 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 // 引入自訂 Hook
 import { useTodos, useTodosDispatch, ACTION_TYPES } from '../context/TodoContext';
 import { commonStyles } from '../styles/commonStyles';
-import { RootStackParamList } from '../App';
+import { SCREEN_NAMES, RootStackParamList } from '../App';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Detail'>;
+type Props = NativeStackScreenProps<RootStackParamList,  typeof SCREEN_NAMES.DETAIL>;
 
 export function DetailScreen({ route, navigation }: Props) {
     // 從路由參數中取得 todoId

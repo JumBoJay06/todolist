@@ -9,7 +9,7 @@ import { commonStyles } from '../styles/commonStyles';
 import { SCREEN_NAMES, RootStackParamList } from '../App'; // 引入常量
 import { Keyboard } from 'react-native';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'TodoList'>;
+type Props = NativeStackScreenProps<RootStackParamList, typeof SCREEN_NAMES.TODO_LIST>;
 
 export function TodoListScreen({ navigation }: Props) {
   // 從 Context 取得狀態和 dispatch 函式
