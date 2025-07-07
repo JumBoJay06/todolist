@@ -26,7 +26,7 @@ export const ACTION_TYPES = Object.freeze({
 } as const);
 
 const TodoContext = createContext<Todo[]>([]);
-const TodoDispatchContext = createContext<Dispatch<TodoAction> | undefined>(undefined);
+const TodoDispatchContext = createContext<Dispatch<TodoAction> | null>(null);
 
 const TODOS_STORAGE_KEY = 'todos_storage_key';
 

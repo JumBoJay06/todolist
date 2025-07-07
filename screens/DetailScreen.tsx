@@ -16,7 +16,7 @@ export function DetailScreen({ route, navigation }: Props) {
     const dispatch = useTodosDispatch();
 
     // 根據 todoId 找到對應的 todo
-    const todo = todos ? todos.find(t => t.id === todoId) : undefined;
+    const todo = todos ? todos.find(t => t.id === todoId) : null;
 
     // 如果找不到 todo，則設定預設值為空字串
     const [text, setText] = useState(todo ? todo.text : '');
