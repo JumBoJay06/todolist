@@ -52,11 +52,11 @@ export function DetailScreen({ route, navigation }: Props) {
         navigation.goBack();
     };
 
-    // 如果 todo 正在載入或不存在，顯示提示
+    // 如果 todo 不存在，顯示提示
     if (!todo) {
         return (
             <View style={commonStyles.pageContainer}>
-                <Text>找不到該事項，或正在載入中...</Text>
+                <Text>找不到該事項</Text>
             </View>
         );
     }

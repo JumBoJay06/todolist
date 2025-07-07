@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, TextInput, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 // 引入自訂 Hook
@@ -67,13 +67,20 @@ export function TodoListScreen({ navigation }: Props) {
             <MaterialIcons name="add-circle" size={36} color={isInputTodo === true ? '#007cdb' : 'gray'} />
         </TouchableOpacity>
       </View>
-      {/* 使用 FlatList 渲染待辦事項列表 */}
+      {todos.length > 0 ? 
+      // 使用 FlatList 渲染待辦事項列表 
       <FlatList
         data={todos}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingBottom: 20 }}
-      />
+      /> :
+      // 如果沒有待辦事項，顯示提示文字
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>沒有待辦事項</Text>
+      </View>
+      }
+      
     </View>
   );
 }
@@ -94,5 +101,16 @@ const styles = StyleSheet.create({
   },
   addContainer: {
     padding: 4,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  emptyText: {
+    marginTop: 16,
+    fontSize: 16,
+    color: 'gray',
   },
 });
