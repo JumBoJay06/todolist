@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import { View, TextInput, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 // 引入自訂 Hook
-import { useTodos, useTodosDispatch, ACTION_TYPES } from '../context/TodoContext';
+import { useTodos, useTodosDispatch, ACTION_TYPES, Todo } from '../context/TodoContext';
 import { TodoItem } from '../components/TodoItem';
 import { commonStyles } from '../styles/commonStyles';
-import { SCREEN_NAMES } from '../App'; // 引入常量
+import { SCREEN_NAMES, RootStackParamList } from '../App'; // 引入常量
+import { Keyboard } from 'react-native';
 
-export function TodoListScreen({ navigation }) {
+type Props = NativeStackScreenProps<RootStackParamList, 'TodoList'>;
+
+export function TodoListScreen({ navigation }: Props) {
   // 從 Context 取得狀態和 dispatch 函式
   const todos = useTodos();
   const dispatch = useTodosDispatch();
@@ -20,25 +24,29 @@ export function TodoListScreen({ navigation }) {
     if (isInputTodo === false) {
       return; // 如果輸入框沒有內容，則不執行新增操作
     }
+
+    // 關閉鍵盤
+    Keyboard.dismiss();
+
     // 派發一個 'ADD_TODO' 的 action
     dispatch({ type: ACTION_TYPES.ADD_TODO, payload: newTodo });
     handleInputChange('');
   };
 
   // 更新輸入框的狀態
-  const handleInputChange = (text) => {
+  const handleInputChange = (text: string) => {
     setNewTodo(text);
     setIsInputTodo(text.trim().length > 0);
   };
 
   // 渲染每個待辦事項的項目
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: { item: Todo }) => (
     <TodoItem
       item={item}
       // 派發 'TOGGLE_TODO' action
       onToggle={() => dispatch({ type: ACTION_TYPES.TOGGLE_TODO, payload: { id: item.id } })}
       // 派發 'DELETE_TODO' action
-      onDelete={() => dispatch({ type: ACTION_TYPES.DELETE_TODO, payload: { id: item.id } })}
+      onDelete={() => dispatch && dispatch({ type: ACTION_TYPES.DELETE_TODO, payload: { id: item.id } })}
       // 導航到詳細頁面
       onNavigate={() => navigation.navigate(SCREEN_NAMES.DETAIL, { todoId: item.id })}
     />
@@ -47,7 +55,7 @@ export function TodoListScreen({ navigation }) {
   return (
     // 使用 View 包裹整個頁面，並套用通用樣式
     <View style={commonStyles.pageContainer}>
-      // 使用 View 包裹輸入框和新增按鈕
+      {/* 使用 View 包裹輸入框和新增按鈕 */}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.textInput}
@@ -59,7 +67,7 @@ export function TodoListScreen({ navigation }) {
             <MaterialIcons name="add-circle" size={36} color={isInputTodo === true ? '#007cdb' : 'gray'} />
         </TouchableOpacity>
       </View>
-      // 使用 FlatList 渲染待辦事項列表
+      {/* 使用 FlatList 渲染待辦事項列表 */}
       <FlatList
         data={todos}
         renderItem={renderItem}

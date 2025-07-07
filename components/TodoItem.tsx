@@ -1,12 +1,26 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { commonStyles } from '../styles/commonStyles';
+import { Todo } from '../context/TodoContext';
 
-export function TodoItem({ item, onToggle, onDelete, onNavigate }) {
+type TodoItemProps = {
+    item: Todo;
+    onToggle: (event: GestureResponderEvent) => void;
+    onDelete: (event: GestureResponderEvent) => void;
+    onNavigate: (event: GestureResponderEvent) => void;
+};
+
+export function TodoItem({ item, onToggle, onDelete, onNavigate }: TodoItemProps) {
     return (
-        // 使用 TouchableOpacity 包裹整個待辦項目，讓它可以被點擊導航
-        <TouchableOpacity onPress={onNavigate} style={[styles.todoItemContainer, item.isComplete && styles.completedContainer, commonStyles.card]}>
-            {/* 使用 TouchableOpacity 包裹勾選框，讓它可以被點擊切換完成狀態 */}
+        <TouchableOpacity
+            onPress={onNavigate}
+            style={[
+                styles.todoItemContainer,
+                item.isComplete && styles.completedContainer,
+                commonStyles.card,
+            ]}
+        >
             <TouchableOpacity onPress={onToggle} style={styles.checkContainer}>
                 <MaterialIcons
                     name={item.isComplete ? 'check-box' : 'check-box-outline-blank'}
@@ -15,19 +29,19 @@ export function TodoItem({ item, onToggle, onDelete, onNavigate }) {
                 />
             </TouchableOpacity>
 
-            {/* 使用 View 包裹文字內容，讓它可以有更多樣式 */}
             <View style={styles.textContainer}>
-                {/* 根據 isComplete 狀態來決定文字樣式 */}
                 <Text style={[styles.todoText, item.isComplete && styles.completedText]}>
                     {item.text}
                 </Text>
                 {item.content ? (
-                    <Text style={[styles.todoContent, item.isComplete && styles.completedContent]} numberOfLines={1}>
+                    <Text
+                        style={[styles.todoContent, item.isComplete && styles.completedContent]}
+                        numberOfLines={1}
+                    >
                         {item.content}
                     </Text>
                 ) : null}
             </View>
-            {/* 使用 TouchableOpacity 包裹刪除按鈕，讓它可以被點擊刪除待辦項目 */}
             <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
                 <MaterialIcons name="delete" size={24} color="#cc0000" />
             </TouchableOpacity>

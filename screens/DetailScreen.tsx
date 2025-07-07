@@ -1,10 +1,14 @@
 import { useState, useLayoutEffect } from 'react';
 import { View, TextInput, StyleSheet, Alert, Text, TouchableOpacity } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 // 引入自訂 Hook
 import { useTodos, useTodosDispatch, ACTION_TYPES } from '../context/TodoContext';
 import { commonStyles } from '../styles/commonStyles';
+import { RootStackParamList } from '../App';
 
-export function DetailScreen({ route, navigation }) {
+type Props = NativeStackScreenProps<RootStackParamList, 'Detail'>;
+
+export function DetailScreen({ route, navigation }: Props) {
     // 從路由參數中取得 todoId
     const { todoId } = route.params;
     // 使用自訂 Hook 取得 todos 狀態和 dispatch 函式
@@ -12,7 +16,7 @@ export function DetailScreen({ route, navigation }) {
     const dispatch = useTodosDispatch();
 
     // 根據 todoId 找到對應的 todo
-    const todo = todos.find(t => t.id === todoId);
+    const todo = todos ? todos.find(t => t.id === todoId) : undefined;
 
     // 如果找不到 todo，則設定預設值為空字串
     const [text, setText] = useState(todo ? todo.text : '');
@@ -40,6 +44,7 @@ export function DetailScreen({ route, navigation }) {
             return;
         }
         // 派發 'UPDATE_TODO' action
+        if (!dispatch) return;
         dispatch({
             type: ACTION_TYPES.UPDATE_TODO,
             payload: { id: todoId, text, content }

@@ -1,17 +1,28 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { TodoProvider } from './context/TodoContext';
+import { Todo, TodoProvider } from './context/TodoContext';
 import { TodoListScreen } from './screens/TodoListScreen';
 import { DetailScreen } from './screens/DetailScreen';
 import { Platform } from 'react-native';
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  TodoList: Todo[];
+  Detail: { todoId: string };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+export const SCREEN_NAMES = Object.freeze({
+  TODO_LIST: 'TodoList',
+  DETAIL: 'Detail',
+});
 
 export default function App() {
   return (
     <TodoProvider>
       <NavigationContainer>
         <Stack.Navigator
+          id={undefined}
           screenOptions={{
             headerStyle: { backgroundColor: '#007cdb' },
             headerTintColor: '#000',
@@ -41,8 +52,3 @@ export default function App() {
     </TodoProvider>
   );
 }
-
-export const SCREEN_NAMES = Object.freeze({
-  TODO_LIST: 'TodoList',
-  DETAIL: 'Detail',
-});
